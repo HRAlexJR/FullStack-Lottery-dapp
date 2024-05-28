@@ -1,0 +1,154 @@
+<section class="container py-5">
+  <div class="d-flex flex-column gap-5">
+    <div class="d-flex flex-column gap-2">
+      <div
+        class="alert d-flex justify-content-between align-items-center"
+        [ngClass]="isBettingWindowOpen ? 'alert-success' : 'alert-danger'"
+        role="alert"
+      >
+        <div class="d-flex flex-column">
+          <div>
+            {{
+              isBettingWindowOpen
+                ? "Betting is open!"
+                : "Lottery is currently not open for betting!"
+            }}
+          </div>
+          <br *ngIf="isBettingWindowOpen === true" />
+          <div *ngIf="isBettingWindowOpen === true">
+            Bet Amount: {{ betAmount }} Tokens
+            <br />
+            Bet Fee: {{ betFee }} Tokens
+          </div>
+        </div>
+
+        <button
+          type="button"
+          *ngIf="isBettingWindowOpen === true"
+          class="btn btn-primary"
+          (click)="attemptPlacingBets()"
+          [disabled]="isPlacingBet === true"
+        >
+          <!-- <i class="fas fa-dice fa-2x"></i> -->
+          <!-- <i class="fas fa-dice"></i> -->
+          <span *ngIf="isPlacingBet === false">Bet</span>
+          <span
+            class="spinner-border"
+            role="status"
+            *ngIf="isPlacingBet === true"
+          >
+            <span class="visually-hidden">Loading...</span>
+          </span>
+        </button>
+      </div>
+
+      <div
+        class="alert alert-success d-flex justify-content-between align-items-center"
+        role="alert"
+        *ngIf="
+          unclaimedLotteryWinning !== '' && unclaimedLotteryWinning !== '0.0'
+        "
+      >
+        <span class="d-flex flex-column">
+          <span class="fs-3">
+            You have unclaimed winnings of {{ unclaimedLotteryWinning }} Tokens!
+          </span>
+          <span class="fs-6">
+            (a winning fee of 30% or {{ baseWinningFee }} Tokens applies, which
+            ever is higher)
+          </span>
+        </span>
+
+        <button
+          class="btn btn-success"
+          (click)="attemptWinningClaim()"
+          [disabled]="isWinningClaimable === true ? false : true"
+        >
+          <span *ngIf="isClaimingWinning === false">Claim</span>
+          <span
+            class="spinner-border"
+            role="status"
+            *ngIf="isClaimingWinning === true"
+          >
+            <span class="visually-hidden">Loading...</span>
+          </span>
+        </button>
+      </div>
+    </div>
+    <article class="card text-dark bg-light mb-3">
+      <h3 class="card-header d-flex flex-column">Your lottery token balance</h3>
+      <div
+        class="card-body d-flex flex-column justify-content-center align-items-center"
+      >
+        <span class="fs-1" *ngIf="isLoadingBalance === false">
+          {{ currentLotteryTokenBalanceForCurrentWallet }} Tokens
+        </span>
+        <hr class="border border-dark border-1 w-100" />
+        <span
+          class="fs-6 d-flex flex-column justify-content-center align-items-center"
+          *ngIf="currentWalletBalance !== ''"
+        >
+          <span>Wallet balance</span>
+          <span>
+            {{ currentWalletBalance }}
+            <i class="fa-brands fa-ethereum"></i>
+          </span>
+        </span>
+        <span
+          class="spinner-border"
+          role="status"
+          *ngIf="isLoadingBalance === true"
+        >
+          <span class="visually-hidden">Loading...</span>
+        </span>
+      </div>
+
+      <div class="card-footer py-3 d-flex flex-column gap-3">
+        <form
+          class="d-flex flex-column gap-3 w-100"
+          [formGroup]="buyTokensForm"
+          (ngSubmit)="attemptTokenPurchase()"
+        >
+          <div class="mb-3">
+            <label for="amount-of-tokens-to-buy" class="form-label"
+              >1 ETH gets 1 Token</label
+            >
+            <input
+              type="text"
+              class="form-control input-lg"
+              placeholder="amount of tokens to buy"
+              id="amount-of-tokens-to-buy"
+              formControlName="lotteryTokenAmount"
+            />
+          </div>
+
+          <button type="submit" class="btn btn-outline-secondary w-100 py-1">
+            <span *ngIf="isAttemptingToPurchaseTokens === false">Buy</span>
+            <div
+              *ngIf="isAttemptingToPurchaseTokens === true"
+              class="spinner-border"
+              role="status"
+            >
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </button>
+        </form>
+
+        <button
+          class="btn btn-outline-secondary w-100 py-1"
+          (click)="attemptTokenRedemption()"
+          *ngIf="isLoadingBalance === false"
+        >
+          <span *ngIf="isAttemptingTokenRedemption === false">Redeem</span>
+          <div
+            *ngIf="isAttemptingTokenRedemption === true"
+            class="spinner-border"
+            role="status"
+          >
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </button>
+      </div>
+    </article>
+  </div>
+</section>

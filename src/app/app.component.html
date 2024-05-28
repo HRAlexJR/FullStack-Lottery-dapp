@@ -1,0 +1,56 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container d-flex flex-row justify-content-between">
+    <a class="navbar-brand" href="/">
+      <span class="font-monospace">
+        <i class="fa-solid fa-dollar-sign"></i> Lottery dApp
+      </span>
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarToggler"
+      aria-controls="navbarToggler"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+      class="collapse navbar-collapse mt-3 mt-md-0 justify-content-end"
+      id="navbarToggler"
+    >
+      <div class="d-flex flex-column flex-lg-row gap-3">
+        <div class="btn-group my-3" role="group" aria-label="Basic example">
+          <button
+            type="button"
+            class="btn btn-primary"
+            [routerLink]="['/wager']"
+          >
+            <!-- <i class="fas fa-dice fa-2x"></i> -->
+            <i class="fas fa-dice"></i>
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            [routerLink]="['/admin']"
+          >
+            <!-- <i class="fas fa-business-time fa-2x"></i> -->
+            <i class="fas fa-business-time"></i>
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="connectMetamaskWallet()"
+            *ngIf="!isWalletLoggedIn"
+          >
+            <!-- <i class="fas fa-wallet fa-2x"></i> -->
+            <i class="fas fa-wallet"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>

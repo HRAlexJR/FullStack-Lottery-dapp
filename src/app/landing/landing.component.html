@@ -1,0 +1,73 @@
+<section class="container py-5">
+  <!-- <div class="">
+    <h1>Lottery</h1>
+    <hr />
+  </div> -->
+
+  <div class="my-3 d-flex flex-column gap-3">
+    <div class="alert alert-info" role="alert">
+      Lottery contract currently deployed at {{ lotteryContractAddress }}.
+    </div>
+
+    <div
+      class="alert alert-success"
+      role="alert"
+      *ngIf="latestLotteryWinner !== ''"
+    >
+      Latest lottery roll winner is {{ latestLotteryWinner }}.
+    </div>
+
+    <div
+      class="alert d-flex justify-content-between align-items-center"
+      [ngClass]="isBettingWindowOpen ? 'alert-success' : 'alert-danger'"
+      role="alert"
+    >
+      <span>{{
+        isBettingWindowOpen ? "Betting is open!" : "Betting is not open!"
+      }}</span>
+
+      <button
+        type="button"
+        *ngIf="isBettingWindowOpen === true"
+        class="btn btn-primary"
+        [routerLink]="['/wager']"
+      >
+        <!-- <i class="fas fa-dice fa-2x"></i> -->
+        <i class="fas fa-dice"></i>
+      </button>
+    </div>
+
+    <div
+      class="alert alert-warning d-flex justify-content-between align-items-center"
+      *ngIf="isLotteryRollAvailable === true"
+      role="alert"
+    >
+      <span> Lottery roll pending!</span>
+
+      <button
+        type="button"
+        *ngIf="isLotteryRollAvailable === true"
+        class="btn btn-primary"
+        (click)="rollLottery()"
+      >
+        <!-- <i class="fas fa-dice fa-2x"></i> -->
+        <i class="fas fa-dice" *ngIf="isAttemptingLotteryRoll === false"></i>
+        <span
+          class="spinner-border"
+          role="status"
+          *ngIf="isAttemptingLotteryRoll === true"
+        >
+          <span class="visually-hidden">Loading...</span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div
+    class="d-flex flex-column justify-content-center align-items-center"
+    *ngIf="lotteryTimeWindowCountdown !== '' && isBettingWindowOpen == true"
+  >
+    <span class="fs-1">{{ closingTimeString }}</span>
+    <span class="fs-6">(until betting window close)</span>
+  </div>
+</section>
